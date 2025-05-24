@@ -131,6 +131,65 @@ function Library:Window(title)
         TweenService:Create(Close, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(166, 166, 166)}, true):Play()
     end)
 
+-- Assuming `ui` is your main UI object and `Top` is where the Minimize and Close buttons are placed
+
+local TweenService = game:GetService("TweenService")
+
+-- Minimize Button Setup
+local Minimize = Instance.new("ImageButton")
+Minimize.Name = "Minimize"
+Minimize.Parent = Top
+Minimize.AnchorPoint = Vector2.new(1, 0.5)
+Minimize.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Minimize.BackgroundTransparency = 1.000
+Minimize.Position = UDim2.new(1, -36, 0.5, 0)
+Minimize.Size = UDim2.new(0, 20, 0, 20)
+Minimize.Image = "http://www.roblox.com/asset/?id=7755372427" -- Adjust the icon as needed
+Minimize.ImageColor3 = Color3.fromRGB(199, 199, 199)
+Minimize.ScaleType = Enum.ScaleType.Crop
+
+-- Circle for restoring the UI
+local RestoreCircle = Instance.new("ImageButton")
+RestoreCircle.Name = "RestoreCircle"
+RestoreCircle.Size = UDim2.new(0, 40, 0, 40)
+RestoreCircle.Position = UDim2.new(0.5, -20, 0.5, -20) -- Center of the screen
+RestoreCircle.Image = "http://www.roblox.com/asset/?id=7755372427" -- Change to a circle icon
+RestoreCircle.BackgroundTransparency = 1
+RestoreCircle.Visible = false -- Initially hidden
+
+-- Minimize functionality
+Minimize.MouseButton1Click:connect(function()
+    ui.Visible = false -- Hide the UI
+    RestoreCircle.Visible = true -- Show the restore circle
+end)
+
+-- Restore functionality
+RestoreCircle.MouseButton1Click:connect(function()
+    ui.Visible = true -- Show the UI
+    RestoreCircle.Visible = false -- Hide the restore circle
+end)
+
+-- Hover effects for Minimize button
+Minimize.MouseEnter:connect(function()
+    TweenService:Create(Minimize, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 255, 255)}, true):Play()
+end)
+
+Minimize.MouseLeave:connect(function()
+    TweenService:Create(Minimize, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(166, 166, 166)}, true):Play()
+end)
+
+-- Hover effects for Restore Circle
+RestoreCircle.MouseEnter:connect(function()
+    TweenService:Create(RestoreCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 255, 255)}, true):Play()
+end)
+
+RestoreCircle.MouseLeave:connect(function()
+    TweenService:Create(RestoreCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(199, 199, 199)}, true):Play()
+end)
+
+-- Add RestoreCircle to the screen
+RestoreCircle.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ScreenGui") -- Make sure to adjust the correct parent
+
     Resize.Name = "Resize"
     Resize.Parent = Main
     Resize.AnchorPoint = Vector2.new(1, 1)
